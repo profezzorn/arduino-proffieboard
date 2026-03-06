@@ -511,7 +511,7 @@
           },
           "url": "https://github.com/profezzorn/arduino-proffieboard/archive/v4.7.tar.gz",
           "archiveFileName": "arduino-proffieboard-v4.7.tar.gz",
-          "checksum": "1375151bf8944ba3ddf89b13c13cfea24fc28b82b0512194f8af286a3e88c72e",
+          "checksum": "SHA-256:1375151bf8944ba3ddf89b13c13cfea24fc28b82b0512194f8af286a3e88c72e",
           "size": "22749242",
           "boards": [
             {"name": "Proffieboard"},
