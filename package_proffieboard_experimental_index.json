@@ -509,10 +509,10 @@
           "help": {
             "online": "https://github.com/profezzorn/arduino-proffieboard/issues"
           },
-          "url": "https://github.com/profezzorn/arduino-proffieboard/archive/v4.4.tar.gz",
-          "archiveFileName": "arduino-proffieboard-v4.4.tar.gz",
-          "checksum": "SHA-256:d9fad987da79e498b5a95846451bb6b68a53e450c5519e7b55dbf7408c65f8d4",
-          "size": "22757935",
+          "url": "https://github.com/profezzorn/arduino-proffieboard/archive/v4.7.tar.gz",
+          "archiveFileName": "arduino-proffieboard-v4.7.tar.gz",
+          "checksum": "1375151bf8944ba3ddf89b13c13cfea24fc28b82b0512194f8af286a3e88c72e",
+          "size": "22749242",
           "boards": [
             {"name": "Proffieboard"},
             {"name": "Proffieboard V2"},
