@@ -523,7 +523,8 @@ static int8_t SCSI_Read10(USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *para
     }
     
     hmsc->bot_state = USBD_BOT_DATA_IN;
-    hmsc->scsi_blk_addr *= hmsc->scsi_blk_size;
+    /* Converting to bytes overflows 32 bits at 4 GiB */
+	/* hmsc->scsi_blk_addr *= hmsc->scsi_blk_size; */
     hmsc->scsi_blk_len  *= hmsc->scsi_blk_size;
     
     /* cases 4,5 : Hi <> Dn */
@@ -614,7 +615,8 @@ static int8_t SCSI_Write10 (USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *pa
     }
     
     hmsc->scsi_blk_addr *= hmsc->scsi_blk_size;
-    hmsc->scsi_blk_len  *= hmsc->scsi_blk_size;
+    /* keep scsi_blk_addr in blocks */
+	/* hmsc->scsi_blk_len  *= hmsc->scsi_blk_size; */
     
     /* cases 3,11,13 : Hn,Ho <> D0 */
     if (hmsc->cbw.dDataLength != hmsc->scsi_blk_len)
@@ -711,7 +713,7 @@ static int8_t SCSI_ProcessRead (USBD_HandleTypeDef  *pdev, uint8_t lun)
   
   if( ((USBD_StorageTypeDef *)pdev->pUserData[1])->Read(lun ,
                               hmsc->bot_data, 
-                              hmsc->scsi_blk_addr / hmsc->scsi_blk_size, 
+                              hmsc->scsi_blk_addr, 
   			      len / hmsc->scsi_blk_size,
 			      (hmsc->scsi_blk_len == len)) < 0)
   {
@@ -730,7 +732,7 @@ static int8_t SCSI_ProcessRead (USBD_HandleTypeDef  *pdev, uint8_t lun)
              len);
   
   
-  hmsc->scsi_blk_addr   += len; 
+  hmsc->scsi_blk_addr   += len / hmsc->scsi_blk_size; 
   hmsc->scsi_blk_len    -= len;  
   
   /* case 6 : Hi = Di */
@@ -759,7 +761,7 @@ static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev, uint8_t lun)
   
   if(((USBD_StorageTypeDef *)pdev->pUserData[1])->Write(lun ,
                               hmsc->bot_data, 
-                              hmsc->scsi_blk_addr / hmsc->scsi_blk_size, 
+                              hmsc->scsi_blk_addr, 
 			      len / hmsc->scsi_blk_size,
 			      (hmsc->scsi_blk_len == len)) < 0)
   {
@@ -771,7 +773,7 @@ static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev, uint8_t lun)
   }
   
   
-  hmsc->scsi_blk_addr  += len; 
+  hmsc->scsi_blk_addr  += len / hmsc->scsi_blk_size; 
   hmsc->scsi_blk_len   -= len; 
   
   /* case 12 : Ho = Do */
